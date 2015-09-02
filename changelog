@@ -1,5 +1,5 @@
-0.0.3: 
-  -  
+0.0.3: Authorization header in place
+  -  Adding support to authorization header
 
 0.0.2: Adding tests for all response codes
   -  addind tests to make sure that we do not automatically fails when a 40X

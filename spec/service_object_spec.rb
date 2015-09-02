@@ -12,6 +12,13 @@ describe Quinoa do
       expect(@service.url).to eq "http://www.camiloribeiro.com"
     end
 
+    it "Should have a authorizoation" do
+      expect(@service.content_type).to eq nil
+
+      @service.authorization = "token !#€%&/()="
+      expect(@service.authorization).to eq "token !#€%&/()="
+    end
+
     it "Should have a Content-Type" do
       expect(@service.content_type).to eq nil
 
@@ -48,6 +55,7 @@ describe Quinoa do
           @service = Quinoa::Service.new "http://www.camiloribeiro.com"
           @service.path = path
           @service.content_type = "application/json"
+          @service.authorization = "token !#€%&/()="
           @service.body = "simple body"
 
         end
@@ -59,12 +67,14 @@ describe Quinoa do
           expect(@service.response.headers[:accept]).to eq("application/xml")
           expect(@service.response.headers[:content_type]).to eq("application/json")
           expect(@service.response.body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
           expect(@service.response.code).to eq(200)
 
           # natural
           expect(@service.response_accept).to eq("application/xml")
           expect(@service.response_content_type).to eq("application/json")
           expect(@service.response_body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
           expect(@service.response_code).to eq(200)
         end
 
@@ -75,12 +85,14 @@ describe Quinoa do
           expect(@service.response.headers[:accept]).to eq("application/xml")
           expect(@service.response.headers[:content_type]).to eq("application/json")
           expect(@service.response.body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
           expect(@service.response.code).to eq(200)
 
           # natural
           expect(@service.response_accept).to eq("application/xml")
           expect(@service.response_content_type).to eq("application/json")
           expect(@service.response_body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
           expect(@service.response_code).to eq(200)
         end
 
