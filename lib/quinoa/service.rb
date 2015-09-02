@@ -3,15 +3,16 @@ require "rest-client"
 module Quinoa
   class Service
     
-    attr_accessor :url, :content_type, :accept, :body, :response
+    attr_accessor :url, :content_type, :accept, :body, :response, :path
     
     def initialize url
+      self.path = ""
       self.url = url
     end
     
     def post!
       begin
-        self.response = RestClient.post self.url, self.body, :accept => self.accept, :content_type => self.content_type
+        self.response = RestClient.post self.url + self.path, self.body, :accept => self.accept, :content_type => self.content_type
       rescue => e
         self.response = e.response
       end
@@ -19,12 +20,11 @@ module Quinoa
 
     def get!
       begin
-        self.response = RestClient.get self.url, :accept => self.accept
+        self.response = RestClient.get self.url + self.path, :accept => self.accept
       rescue => e
         self.response = e.response
       end
     end
-
 
     def response_code
       self.response.code

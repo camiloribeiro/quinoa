@@ -35,6 +35,61 @@ describe Quinoa do
 
   end
 
+
+  describe "defining a different paths" do
+
+    ["/", "/path"].each do |path|
+      describe "should work for the path #{path}" do
+    
+        before(:each) do 
+          stub_request(:any, "http://www.camiloribeiro.com#{path}").
+            to_return(:status => 200, :body => "simple response", :headers => {:accept=>"application/xml", :content_type => "application/json"})
+
+          @service = Quinoa::Service.new "http://www.camiloribeiro.com"
+          @service.path = path
+          @service.content_type = "application/json"
+          @service.body = "simple body"
+
+        end
+
+        it "should post" do
+          @service.post!
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.response.code).to eq(200)
+
+          # natural
+          expect(@service.response_accept).to eq("application/xml")
+          expect(@service.response_content_type).to eq("application/json")
+          expect(@service.response_body).to eq("simple response")
+          expect(@service.response_code).to eq(200)
+        end
+
+        it "should get" do
+          @service.get!
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.response.code).to eq(200)
+
+          # natural
+          expect(@service.response_accept).to eq("application/xml")
+          expect(@service.response_content_type).to eq("application/json")
+          expect(@service.response_body).to eq("simple response")
+          expect(@service.response_code).to eq(200)
+        end
+
+        
+      end
+    end
+  end
+
+
   describe "the service should have the basic behaviours of a service" do
 
     # 303 post and get, 301 get, 302 get and 307 get failing
@@ -80,6 +135,59 @@ describe Quinoa do
           expect(@service.response_content_type).to eq("application/json")
           expect(@service.response_body).to eq("simple response")
           expect(@service.response_code).to eq(code)
+        end
+
+      end
+    end
+
+    # 303 post and get, 301 get, 302 get and 307 get failing
+    [301,302,307].each do |code|
+      describe "when returning code #{code}" do
+        before(:each) do 
+          stub_request(:any, "http://www.camiloribeiro.com/").
+            to_return(:status => code, :body => "simple response", :headers => {:accept=>"application/xml", :content_type => "application/json", :location => "http://www.bugbang.com.br"})
+
+          stub_request(:any, "http://www.bugbang.com.br/").
+            to_return(:status => 200, :body => "followed redirect", :headers => {:accept=>"application/xml", :content_type => "application/json"})
+
+          @service = Quinoa::Service.new "http://www.camiloribeiro.com"
+          @service.content_type = "application/json"
+          @service.body = "simple body"
+
+        end
+
+        it "should post" do
+          @service.post!
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.response.headers[:location]).to eq("http://www.bugbang.com.br")
+          expect(@service.response.code).to eq(code)
+
+          # natural
+          expect(@service.response_accept).to eq("application/xml")
+          expect(@service.response_content_type).to eq("application/json")
+          expect(@service.response_body).to eq("simple response")
+          expect(@service.response_location).to eq("http://www.bugbang.com.br")
+          expect(@service.response_code).to eq(code)
+        end
+
+        it "should get" do
+          @service.get!
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("followed redirect")
+          expect(@service.response.code).to eq(200)
+
+          # natural
+          expect(@service.response_accept).to eq("application/xml")
+          expect(@service.response_content_type).to eq("application/json")
+          expect(@service.response_body).to eq("followed redirect")
+          expect(@service.response_code).to eq(200)
         end
 
       end
