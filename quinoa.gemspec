@@ -24,10 +24,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0'
   s.add_development_dependency 'coveralls', '~> 0'
   s.add_development_dependency 'pry', '~> 0'
-  s.add_development_dependency 'rake', '~> 10.4.2'
+  s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency 'nyan-cat-formatter', '~> 0'
-  s.add_development_dependency 'cucumber', '~> 2.0.0'
-  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'cucumber', '~> 0'
+  s.add_development_dependency 'webmock', '~> 0'
 
   s.add_dependency 'rest-client', '~> 0'
   s.add_dependency 'rspec', '~> 0'
