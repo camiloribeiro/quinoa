@@ -1,4 +1,7 @@
-0.0,2: Adding tests for all response codes
+0.0.3: 
+  -  
+
+0.0.2: Adding tests for all response codes
   -  addind tests to make sure that we do not automatically fails when a 40X
      or 50X wild response code apears
 
