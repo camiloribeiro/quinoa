@@ -15,19 +15,19 @@ The idea is to define a rest endpoint and some details about it only once, and t
 
 For example, if I want to define a rest endpoint for the url http://www.camiloribeiro.com with the content-type application/json and send two different body payloads, I could do it like this:
 
-      camilo_test = Quinoa::Service.new "http://camiloribeiro.com"
-      camilo_test.content_type = "application/json"
+      test = Quinoa::Service.new "http://camiloribeiro.com"
+      test.content_type = "application/json"
 
-      camilo_test.body = '{ "foo":"bar"}'
-      result1 = camilo_test.post!
+      test.body = '{ "foo":"bar"}'
+      result1 = test.post!
 
-      camilo_test.body = '{ "bar":"foo"}'
-      result2 = camilo_test.post!
+      test.body = '{ "bar":"foo"}'
+      result2 = test.post!
 
 Now if I want to change and use another endpoint in the same url, I can do something like this:
 
-      camilo_test.path = /new_endpoint
-      result3 = camilo_test.get!
+      test.path = /new_endpoint
+      result3 = test.get!
 
 To read the response it is as easy as setting the initial data:
 
