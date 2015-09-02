@@ -1,5 +1,6 @@
-CELLO  
+QUINOA
 =====
+![alt tag](https://raw.githubusercontent.com/camiloribeiro/quinoa/master/quinoa.png)
 
 LICENSE
 =======
