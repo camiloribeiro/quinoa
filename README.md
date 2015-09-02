@@ -1,6 +1,6 @@
 QUINOA
 =====
-![alt tag](https://raw.githubusercontent.com/camiloribeiro/quinoa/master/quinoa.jpg)
+![alt tag](http://i.huffpost.com/gen/1821327/images/n-QUINOA-large570.jpg)
 
 LICENSE
 =======
