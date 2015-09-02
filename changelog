@@ -1,0 +1,8 @@
+0.0,2: Adding tests for all response codes
+  -  addind tests to make sure that we do not automatically fails when a 40X
+     or 50X wild response code apears
+
+0.0.1: Brand new version!
+  - Adding first version of the gem with basic operations post and get
+  - Possible to set content-type, body, accept and url
+  - Possible to read content-type, body and accept in the response object
