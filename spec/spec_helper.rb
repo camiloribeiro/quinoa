@@ -1,8 +1,7 @@
 require 'rspec'
 require 'webmock/rspec'
-require 'coveralls'
-
-Coveralls.wear_merged!
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 
 RSpec.configure do |config|

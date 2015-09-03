@@ -1,10 +1,7 @@
 require "cucumber/rake/task"
 require 'rspec/core/rake_task'
-require 'coveralls/rake/task'
 
-Coveralls::RakeTask.new
-
-task :default => [:spec,:run, 'coveralls:push']
+task :default => [:spec]
 
 RSpec::Core::RakeTask .new(:spec) do |task|
     task.rspec_opts = ["--format documentation"]
