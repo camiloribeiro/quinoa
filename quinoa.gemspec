@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'cucumber', '~> 0'
   s.add_development_dependency 'webmock', '~> 0'
 
-  s.add_dependency 'rest-client', '~> 0'
-  s.add_dependency 'rspec', '~> 0'
+  s.add_dependency 'rest-client', '~> 0.9.2'
+  s.add_dependency 'rspec', '~> 0.9.4'
 
 end
