@@ -1,5 +1,8 @@
-0.0.5: 
-  -  
+0.0.6: 
+  - 
+
+0.0.5: fixing versions of gems
+  -  bugfix
 
 0.0.4: setting versions for rspec and rest-client
   -  rspec 0.9.4 and res-client 0.9.2

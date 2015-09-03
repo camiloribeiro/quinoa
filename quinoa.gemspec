@@ -27,9 +27,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency 'nyan-cat-formatter', '~> 0'
   s.add_development_dependency 'cucumber', '~> 0'
-  s.add_development_dependency 'webmock', '~> 0'
+  s.add_development_dependency 'webmock', '~> 1.21.0'
 
-  s.add_dependency 'rest-client', '~> 0.9.2'
-  s.add_dependency 'rspec', '~> 0.9.4'
+  s.add_dependency 'rest-client', '~> 1.8.0'
+  s.add_dependency 'rspec', '~> 3.3.0'
 
 end
