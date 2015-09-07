@@ -1,5 +1,8 @@
-0.0.6: 
+0.0.7:
   - 
+
+0.0.6: Adding overite url
+  - Now you can pass a url to a post or get and overite it. 
 
 0.0.5: fixing versions of gems
   -  bugfix

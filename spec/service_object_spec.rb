@@ -42,6 +42,43 @@ describe Quinoa do
 
   end
 
+  describe "overwiting the entire url to post and get" do
+
+      before(:each) do 
+        stub_request(:any, "http://www.bugbang.com.br/foo").
+          to_return(:status => 200, :body => "simple response", :headers => {:accept=>"application/xml", :content_type => "application/json"})
+
+        @service = Quinoa::Service.new "http://www.camiloribeiro.com"
+        @service.path = "/something"
+        @service.content_type = "application/json"
+        @service.authorization = "token !#€%&/()="
+        @service.body = "simple body"
+
+      end
+
+      it "should overwite for get" do
+          @service.get! "http://www.bugbang.com.br/foo"
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
+          expect(@service.response.code).to eq(200)
+      end
+
+      it "should overwite for post" do
+          @service.post! "http://www.bugbang.com.br/foo"
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
+          expect(@service.response.code).to eq(200)
+      end
+  end
+
 
   describe "defining a different paths" do
 
