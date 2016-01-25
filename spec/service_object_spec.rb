@@ -40,6 +40,22 @@ describe Quinoa do
       expect(@service.body).to eq "text"
     end
 
+    it "Should be able to add a single custom header" do
+      expect(@service.custom_headers).to eq Hash[]
+
+      @service.add_custom_header :"my-company-custom-header", "text"
+      expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text"]
+    end
+
+    it "Should be able to add many custom headers" do
+      expect(@service.custom_headers).to eq Hash[]
+
+      @service.add_custom_header "my-company-custom-header", "text"
+      @service.add_custom_header "headerx", "bar"
+      @service.add_custom_header :"my-foo-custom-header", "foo"
+      expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
+    end
+
   end
 
   describe "overwiting the entire url to post and get" do

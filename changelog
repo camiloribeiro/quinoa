@@ -1,5 +1,5 @@
-0.0.7:
-  - 
+0.0.7: Adding support to custom headers
+  - Now you can send custom headers in the requests
 
 0.0.6: Adding overite url
   - Now you can pass a url to a post or get and overite it. 
