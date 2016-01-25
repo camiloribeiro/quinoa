@@ -1,3 +1,7 @@
+0.0.8: Adding support to custom headers also to get requests
+  - Now you can send custom headers in the get requests
+  - Imporving tests for custom headers
+
 0.0.7: Adding support to custom headers
   - Now you can send custom headers in the requests
 

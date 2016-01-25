@@ -27,9 +27,9 @@ module Quinoa
     def get! url=nil
       begin
         if url == nil
-          self.response = RestClient.get self.url + self.path, :accept => self.accept, :authorization => self.authorization
+          self.response = RestClient.get self.url + self.path, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
         else
-          self.response = RestClient.get url, :accept => self.accept, :authorization => self.authorization
+          self.response = RestClient.get url, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
         end
       rescue => e
         self.response = e.response

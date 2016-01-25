@@ -39,23 +39,57 @@ describe Quinoa do
       @service.body = "text"
       expect(@service.body).to eq "text"
     end
+ 
+    describe "Custom headers" do
 
-    it "Should be able to add a single custom header" do
-      expect(@service.custom_headers).to eq Hash[]
+      it "Should be able to add a single custom header" do
 
-      @service.add_custom_header :"my-company-custom-header", "text"
-      expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text"]
+        expect(@service.custom_headers).to eq Hash[]
+
+        @service.add_custom_header "my-company-custom-header", "text"
+        expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text"]
+      end
+
+      it "Should be able to add many custom headers" do
+        expect(@service.custom_headers).to eq Hash[]
+
+        @service.add_custom_header "my-company-custom-header", "text"
+        @service.add_custom_header "headerx", "bar"
+        @service.add_custom_header :"my-foo-custom-header", "foo"
+
+        expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
+      end
+
+      ["post", "get"].each do |method|
+      it "Should be present in the #{method} requests" do
+        # For this mock order matters
+        stub_request(:any, "http://www.camiloribeiro.com").
+          to_return(:status => 200, :body => "This request requires a 'my-company-custom-header' to work")
+
+        stub_request(:any, "http://www.camiloribeiro.com").
+          with(:headers => { 'my-company-custom-header' => "text" }).
+          to_return(:status => 200, :body => "This request works fine")
+
+        @other_service = Quinoa::Service.new "http://www.camiloribeiro.com"
+
+        expect(@service.custom_headers).to eq Hash[]
+        expect(@other_service.custom_headers).to eq Hash[]
+
+        @service.add_custom_header "my-company-custom-header", "text"
+        @service.add_custom_header "headerx", "bar"
+        @service.add_custom_header :"my-foo-custom-header", "foo"
+
+        expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
+        expect(@other_service.custom_headers).to eq Hash[]
+
+        @service.send "#{method}!"
+        @other_service.send "#{method}!"
+
+        expect(@service.response.body).to eq("This request works fine")
+        expect(@other_service.response.body).to eq("This request requires a 'my-company-custom-header' to work")
+      end
     end
-
-    it "Should be able to add many custom headers" do
-      expect(@service.custom_headers).to eq Hash[]
-
-      @service.add_custom_header "my-company-custom-header", "text"
-      @service.add_custom_header "headerx", "bar"
-      @service.add_custom_header :"my-foo-custom-header", "foo"
-      expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
     end
-
   end
 
   describe "overwiting the entire url to post and get" do
@@ -240,6 +274,7 @@ describe Quinoa do
         end
 
         it "should get" do
+
           @service.get!
 
           # explicity

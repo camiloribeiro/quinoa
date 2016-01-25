@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quinoa (0.0.6)
+    quinoa (0.0.7)
       rest-client (~> 1.8.0)
       rspec (~> 3.3.0)
 
@@ -23,7 +23,7 @@ GEM
       term-ansicolor (>= 1.0.5)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.24)
+    domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     gherkin (2.4.21)
       json (>= 1.4.6)
@@ -31,8 +31,8 @@ GEM
       domain_name (~> 0.5)
     json (1.8.3)
     method_source (0.8.2)
-    mime-types (2.6.1)
-    netrc (0.10.3)
+    mime-types (2.99)
+    netrc (0.11.0)
     nyan-cat-formatter (0.11)
       rspec (>= 2.99, >= 2.14.2, < 4)
     pry (0.10.1)
