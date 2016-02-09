@@ -60,5 +60,9 @@ module Quinoa
       self.custom_headers.merge! custom_header_name.to_sym => custom_header_value.to_s
     end
 
+    def remove_custom_header custom_header_name
+      self.custom_headers.delete custom_header_name.to_sym
+    end
+
   end
 end

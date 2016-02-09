@@ -60,6 +60,20 @@ describe Quinoa do
         expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
       end
 
+      it "Should be able to remove one among many custom headers" do
+        expect(@service.custom_headers).to eq Hash[]
+
+        @service.add_custom_header "my-company-custom-header", "text"
+        @service.add_custom_header "headerx", "bar"
+        @service.add_custom_header :"my-foo-custom-header", "foo"
+
+        expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :headerx => "bar", :"my-foo-custom-header" => "foo"]
+
+        @service.remove_custom_header "headerx"
+
+        expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :"my-foo-custom-header" => "foo"]
+      end
+
       ["post", "get"].each do |method|
       it "Should be present in the #{method} requests" do
         # For this mock order matters
