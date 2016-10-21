@@ -39,6 +39,25 @@ describe Quinoa do
       @service.body = "text"
       expect(@service.body).to eq "text"
     end
+
+    describe "Insite expectations configuration" do
+
+      it "Should be able to add expected response code" do
+        expect(@service.insite_expectations).to eq Hash[]
+
+        @service.add_expected_status 200
+        expect(@service.insite_expectations).to eq Hash[:status_code => {:compare_using=>"eq", :value=>200, :leval=>:fail}]
+      end
+
+      it "Should be able to add expected body contains" do
+        expect(@service.insite_expectations).to eq Hash[]
+
+        @service.add_expected_body_string "works"
+        expect(@service.insite_expectations).to eq Hash[:body => {:compare_using=>"contains", :value=>"works", :leval=>:warn}]
+      end
+
+    end
+
  
     describe "Custom headers" do
 

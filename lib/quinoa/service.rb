@@ -5,7 +5,7 @@ require "benchmark"
 module Quinoa
   class Service
 
-    attr_accessor :url, :content_type, :accept, :body, :response, :path, :authorization, :custom_headers, :time
+    attr_accessor :url, :content_type, :accept, :body, :response, :path, :authorization, :custom_headers, :time, :insite_expectations
 
 
     def initialize url
@@ -13,6 +13,7 @@ module Quinoa
       self.path = ""
       self.authorization = ""
       self.custom_headers = {}
+      self.insite_expectations = {}
       self.url = url
     end
 
@@ -88,6 +89,19 @@ module Quinoa
           }
         }
       )
+    end
+
+    def add_expected_status value
+      add_expectation  "status_code", value, "eq", :fail
+    end
+
+    def add_expected_body_string value
+      add_expectation  "body", value, "contains"
+    end
+
+    private
+    def add_expectation attribute, value, comparison = "eq", level = :warn
+      self.insite_expectations.merge! attribute.to_sym => {:compare_using => comparison, :value => value, :leval => level}
     end
 
   end
