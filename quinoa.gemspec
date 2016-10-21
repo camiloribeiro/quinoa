@@ -21,13 +21,13 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'simplecov', '~> 0.11.1'
-  s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4.8'
-  s.add_development_dependency 'pry', '~> 0.10.3'
-  s.add_development_dependency 'rake', '~> 10.5.0'
+  s.add_development_dependency 'simplecov', '~> 0.12.0'
+  s.add_development_dependency 'codeclimate-test-reporter', '~> 0.6.0'
+  s.add_development_dependency 'pry', '~> 0.10.4'
+  s.add_development_dependency 'rake', '~> 11.3.0'
   s.add_development_dependency 'nyan-cat-formatter', '~> 0.11'
-  s.add_development_dependency 'cucumber', '~> 2.3.2'
-  s.add_development_dependency 'webmock', '~> 1.22.6'
+  s.add_development_dependency 'cucumber', '~> 2.4.0'
+  s.add_development_dependency 'webmock', '~> 2.1.0'
 
   s.add_dependency 'rest-client', '~> 2.0.0'
   s.add_dependency 'rspec', '~> 3.5.0'
