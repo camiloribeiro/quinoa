@@ -6,7 +6,6 @@ quinoa
 [![Code Climate](https://codeclimate.com/github/camiloribeiro/quinoa.png)](https://codeclimate.com/github/camiloribeiro/quinoa)
 [![Dependency Status](https://gemnasium.com/camiloribeiro/quinoa.png)](https://gemnasium.com/camiloribeiro/quinoa)
 [![Test Coverage](https://codeclimate.com/github/camiloribeiro/quinoa/badges/coverage.svg)](https://codeclimate.com/github/camiloribeiro/quinoa/coverage)
-[![endorse](https://api.coderwall.com/camiloribeiro/endorsecount.png)](https://coderwall.com/camiloribeiro)
 
 ![alt tag](http://i.huffpost.com/gen/1821327/images/n-QUINOA-large570.jpg)
 
