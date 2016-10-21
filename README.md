@@ -41,7 +41,7 @@ To read the response it is as easy as setting the initial data:
 LICENSE
 =======
 
-Copyright 2015 Camilo Ribeiro camilo@camiloribeiro.com
+Copyright 2015 - 2016 Camilo Ribeiro camilo@camiloribeiro.com
 
 This file is part of Quinoa.
 
