@@ -81,9 +81,8 @@ describe Quinoa do
           expect(JSON.parse(@service.report).to_hash["health"]).to eq true
           expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
 
-          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "status_code"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["assertion_result"]).to eq true
 
         end
 
@@ -99,9 +98,8 @@ describe Quinoa do
         
           expect(JSON.parse(@service.report).to_hash["health"]).to eq true
 
-          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "body"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["assertion_result"]).to eq true
 
         end
 
@@ -116,12 +114,37 @@ describe Quinoa do
           @service.check!
         
           expect(JSON.parse(@service.report).to_hash["health"]).to eq true
-        expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
+          expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
 
-          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
-          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "response_time"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["assertion_result"]).to eq true
 
+        end
+
+        it "Should be execute a check with success for all checks" do
+          stub_request(:any, "http://www.camiloribeiro.com").
+            to_return(:status => 200, :body => "This request works fine")
+
+          expect(@service.expectations).to eq Hash[]
+
+          @service.add_expected_status 200
+          @service.add_expected_body_string "works"
+          @service.add_expected_max_response_time 1
+
+          @service.post!
+          @service.check!
+
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["assertion_result"]).to eq true
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["assertion_result"]).to eq true
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["assertion_result"]).to eq true
         end
 
       end

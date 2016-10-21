@@ -137,10 +137,11 @@ module Quinoa
 
     def get_assertion_record assertion_item, expected_value, assertion_result, level
       {
-        :status => "health",
-        :expected_value => expected_value,
-        :assertion_result => assertion_result,
-        :assertion_item => assertion_item
+        assertion_item => {
+          :status => "health",
+          :expected_value => expected_value,
+          :assertion_result => assertion_result,
+        }
       }
     end
 
