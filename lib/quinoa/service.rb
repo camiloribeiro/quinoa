@@ -81,7 +81,7 @@ module Quinoa
     def report
       JSON.pretty_generate(
         {
-          :health => true,
+          :health => get_health(self.assertions.map{|a| a[1][:status]}),
           :response => {
             :status_code => self.response.code,
             :response_body => self.response.body,
@@ -138,11 +138,23 @@ module Quinoa
     def get_assertion_record assertion_item, expected_value, assertion_result, level
       {
         assertion_item => {
-          :status => "health",
+          :status => get_status(assertion_result, level),
           :expected_value => expected_value,
           :assertion_result => assertion_result,
         }
       }
+    end
+
+    def get_status assertion_result, level
+      return level if !assertion_result
+      return :health
+    end
+
+    def get_health all_health_status
+      return :fail   if all_health_status.include? :fail
+      return :warn   if all_health_status.include? :warn
+      return :health if all_health_status.include? :health
+      return "health"
     end
 
   end

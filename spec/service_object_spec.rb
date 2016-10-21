@@ -77,8 +77,8 @@ describe Quinoa do
 
           @service.post!
           @service.check!
-        
-          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq "health"
           expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
 
           expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["status"]).to eq "health"
@@ -96,7 +96,7 @@ describe Quinoa do
           @service.post!
           @service.check!
         
-          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq "health"
 
           expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["status"]).to eq "health"
           expect(JSON.parse(@service.report).to_hash["assertions"]["body"]["assertion_result"]).to eq true
@@ -113,7 +113,7 @@ describe Quinoa do
           @service.post!
           @service.check!
         
-          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq "health"
           expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
 
           expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["status"]).to eq "health"
@@ -134,7 +134,7 @@ describe Quinoa do
           @service.post!
           @service.check!
 
-          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq "health"
           expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
 
           expect(JSON.parse(@service.report).to_hash["assertions"]["response_time"]["status"]).to eq "health"
@@ -146,6 +146,24 @@ describe Quinoa do
           expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["status"]).to eq "health"
           expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["assertion_result"]).to eq true
         end
+
+        it "Should be execute a check with failure returning the right level" do
+          stub_request(:any, "http://www.camiloribeiro.com").
+            to_return(:status => 200, :body => "This request works fine")
+
+          expect(@service.expectations).to eq Hash[]
+          @service.add_expected_status 300
+
+          @service.post!
+          @service.check!
+        
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq "fail"
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["status"]).to eq "fail"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status_code"]["assertion_result"]).to eq false
+
+        end
+
 
       end
     end
@@ -191,7 +209,7 @@ describe Quinoa do
         @service = Quinoa::Service.new "http://www.camiloribeiro.com"
         @service.get!
 
-        expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+        expect(JSON.parse(@service.report).to_hash["health"]).to eq "health"
         expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
         expect(JSON.parse(@service.report).to_hash["response"]["response_body"]).to eq "This request works fine"
         expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
