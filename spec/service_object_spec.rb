@@ -40,25 +40,93 @@ describe Quinoa do
       expect(@service.body).to eq "text"
     end
 
-    describe "Insite expectations configuration" do
+    describe "expectations" do
+      describe "configuration" do
 
-      it "Should be able to add expected response code" do
-        expect(@service.insite_expectations).to eq Hash[]
+        it "Should be able to add expected response code" do
+          expect(@service.expectations).to eq Hash[]
 
-        @service.add_expected_status 200
-        expect(@service.insite_expectations).to eq Hash[:status_code => {:compare_using=>"eq", :value=>200, :leval=>:fail}]
+          @service.add_expected_status 200
+          expect(@service.expectations).to eq Hash[:status_code => {:compare_using=>"eq", :value=>200, :level=>:fail}]
+        end
+
+        it "Should be able to add expected body contains" do
+          expect(@service.expectations).to eq Hash[]
+
+          @service.add_expected_body_string "works"
+          expect(@service.expectations).to eq Hash[:body => {:compare_using=>"contains", :value=>"works", :level=>:warn}]
+        end
+
+        it "Should be able to add expected response time under" do
+          expect(@service.expectations).to eq Hash[]
+
+          @service.add_expected_max_response_time 1
+          expect(@service.expectations).to eq Hash[:response_time => {:compare_using=>"under", :value=>1, :level=>:warn}]
+        end
+
       end
 
-      it "Should be able to add expected body contains" do
-        expect(@service.insite_expectations).to eq Hash[]
+      describe "execution" do
 
-        @service.add_expected_body_string "works"
-        expect(@service.insite_expectations).to eq Hash[:body => {:compare_using=>"contains", :value=>"works", :leval=>:warn}]
+        it "Should be execute a check with success for status code" do
+          stub_request(:any, "http://www.camiloribeiro.com").
+            to_return(:status => 200, :body => "This request works fine")
+
+          expect(@service.expectations).to eq Hash[]
+          @service.add_expected_status 200
+
+          @service.post!
+          @service.check!
+        
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "status_code"
+
+        end
+
+        it "Should be execute a check with success for body contains string" do
+          stub_request(:any, "http://www.camiloribeiro.com").
+            to_return(:status => 200, :body => "This request works fine")
+
+          expect(@service.expectations).to eq Hash[]
+          @service.add_expected_body_string "works"
+
+          @service.post!
+          @service.check!
+        
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "body"
+
+        end
+
+        it "Should be execute a check with success for response time under a threshold" do
+          stub_request(:any, "http://www.camiloribeiro.com").
+            to_return(:status => 200, :body => "This request works fine")
+
+          expect(@service.expectations).to eq Hash[]
+          @service.add_expected_max_response_time 1
+
+          @service.post!
+          @service.check!
+        
+          expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+        expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
+
+          expect(JSON.parse(@service.report).to_hash["assertions"]["status"]).to eq "health"
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_result"]).to eq true
+          expect(JSON.parse(@service.report).to_hash["assertions"]["assertion_item"]).to eq "response_time"
+
+        end
+
       end
-
     end
 
- 
     describe "Custom headers" do
 
       it "Should be able to add a single custom header" do
@@ -104,6 +172,8 @@ describe Quinoa do
         expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
         expect(JSON.parse(@service.report).to_hash["response"]["response_body"]).to eq "This request works fine"
         expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
+
+        expect(JSON.parse(@service.report).to_hash["assertions"]).to be {}
       end
 
       ["post", "get"].each do |method|
