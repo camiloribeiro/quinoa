@@ -74,6 +74,19 @@ describe Quinoa do
         expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :"my-foo-custom-header" => "foo"]
       end
 
+      it "Should show a report about the response" do
+        stub_request(:any, "http://www.camiloribeiro.com").
+          to_return(:status => 200, :body => "This request works fine")
+
+        @service = Quinoa::Service.new "http://www.camiloribeiro.com"
+        @service.get!
+
+        expect(JSON.parse(@service.report).to_hash["health"]).to eq true
+        expect(JSON.parse(@service.report).to_hash["response"]["status_code"]).to eq 200
+        expect(JSON.parse(@service.report).to_hash["response"]["response_body"]).to eq "This request works fine"
+        expect(JSON.parse(@service.report).to_hash["response"]["response_time"]).to be < 0.1
+      end
+
       ["post", "get"].each do |method|
       it "Should be present in the #{method} requests" do
         # For this mock order matters

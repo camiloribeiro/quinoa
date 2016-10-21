@@ -1,11 +1,15 @@
 require "rest-client"
+require "json"
+require "benchmark"
 
 module Quinoa
   class Service
 
-    attr_accessor :url, :content_type, :accept, :body, :response, :path, :authorization, :custom_headers
+    attr_accessor :url, :content_type, :accept, :body, :response, :path, :authorization, :custom_headers, :time
+
 
     def initialize url
+      self.time = ""
       self.path = ""
       self.authorization = ""
       self.custom_headers = {}
@@ -15,9 +19,13 @@ module Quinoa
     def post! url=nil
       begin
         if url == nil
-          self.response = RestClient.post self.url + self.path, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
+          self.time = Benchmark.measure do
+            self.response = RestClient.post self.url + self.path, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
+          end
         else
-          self.response = RestClient.post url, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
+          self.time = Benchmark.measure do
+            self.response = RestClient.post url, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
+          end
         end
       rescue => e
         self.response = e.response
@@ -27,9 +35,13 @@ module Quinoa
     def get! url=nil
       begin
         if url == nil
-          self.response = RestClient.get self.url + self.path, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
+          self.time = Benchmark.measure do
+            self.response = RestClient.get self.url + self.path, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
+          end
         else
-          self.response = RestClient.get url, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
+          self.time = Benchmark.measure do
+            self.response = RestClient.get url, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
+          end
         end
       rescue => e
         self.response = e.response
@@ -62,6 +74,20 @@ module Quinoa
 
     def remove_custom_header custom_header_name
       self.custom_headers.delete custom_header_name.to_sym
+    end
+
+
+    def report
+      JSON.pretty_generate(
+        {
+          :health => true,
+          :response => {
+            :status_code => self.response.code,
+            :response_body => self.response.body,
+            :response_time => self.time.real
+          }
+        }
+      )
     end
 
   end
