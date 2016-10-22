@@ -21,13 +21,25 @@ module Quinoa
     def post! url=nil
       begin
         if url == nil
-          self.time = Benchmark.measure do
-            self.response = RestClient.post self.url + self.path, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
-          end
+          get_time { 
+            RestClient.post(
+              self.url + self.path, 
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
         else
-          self.time = Benchmark.measure do
-            self.response = RestClient.post url, self.body, {:accept => self.accept, :content_type => self.content_type, :authorization => self.authorization}.merge!(self.custom_headers)
-          end
+          get_time { 
+            RestClient.post( 
+              url, 
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
         end
       rescue => e
         self.response = e.response
@@ -37,13 +49,21 @@ module Quinoa
     def get! url=nil
       begin
         if url == nil
-          self.time = Benchmark.measure do
-            self.response = RestClient.get self.url + self.path, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
-          end
+          get_time { 
+            RestClient.get(
+              self.url + self.path, 
+              {:accept => self.accept, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
         else
-          self.time = Benchmark.measure do
-            self.response = RestClient.get url, {:accept => self.accept, :authorization => self.authorization}.merge!(self.custom_headers)
-          end
+          get_time { 
+            RestClient.get( 
+              url, 
+              {:accept => self.accept, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
         end
       rescue => e
         self.response = e.response
@@ -93,19 +113,20 @@ module Quinoa
     end
 
     def check!
+      #TO DO: Handle case when response is nil
       exit 0 if self.response.nil?
       self.expectations.each do | expectation |
         assertion_item = expectation[0]
         expectation_map = Hash[*expectation][assertion_item]
 
         self.assertions.merge! get_assertion_record(
-                                              assertion_item,
-                                              expectation_map[:value], 
-                                              check_attribute?(
-                                                assertion_item,
-                                                expectation_map[:value], 
-                                                expectation_map[:compare_using]), 
-                                              expectation_map[:level])
+          assertion_item,
+          expectation_map[:value], 
+          check_attribute?(
+            assertion_item,
+            expectation_map[:value], 
+            expectation_map[:compare_using]), 
+          expectation_map[:level])
       end
     end
 
@@ -157,6 +178,12 @@ module Quinoa
       return :warn   if all_health_status.include? :warn
       return :health if all_health_status.include? :health
       return "health"
+    end
+
+    def get_time
+      self.time = Benchmark.measure do
+        self.response = yield
+      end
     end
 
   end
