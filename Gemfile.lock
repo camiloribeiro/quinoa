@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quinoa (0.0.11)
+    quinoa (0.0.10)
       rest-client (~> 2.0.0)
       rspec (~> 3.5.0)
 
