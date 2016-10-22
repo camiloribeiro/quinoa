@@ -95,12 +95,14 @@ module Quinoa
     def check!
       exit 0 if self.response.nil?
       self.expectations.each do | expectation |
-        expectation_map = Hash[*expectation][expectation[0]]
+        assertion_item = expectation[0]
+        expectation_map = Hash[*expectation][assertion_item]
+
         self.assertions.merge! get_assertion_record(
-                                              expectation[0],
+                                              assertion_item,
                                               expectation_map[:value], 
                                               check_attribute?(
-                                                expectation[0],
+                                                assertion_item,
                                                 expectation_map[:value], 
                                                 expectation_map[:compare_using]), 
                                               expectation_map[:level])
