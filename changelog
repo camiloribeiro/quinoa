@@ -1,3 +1,7 @@
+0.0.10: Adding first version of expectations and report api
+  - adding report
+  - adding expectations
+
 0.0.10: Adding remove custom header method
   - adding remove_custom_header 
 

@@ -36,6 +36,10 @@ To read the response it is as easy as setting the initial data:
       result2.response_body
       => "{ "some":"body"}
 
+To get a report back you can use the function report
+
+      test.report
+
 
 LICENSE
 =======
