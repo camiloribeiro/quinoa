@@ -19,59 +19,11 @@ module Quinoa
     end
 
     def put! url=nil
-      begin
-        if url == nil
-          get_time { 
-            RestClient.put(
-              self.url + self.path, 
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
-               :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
-          }
-        else
-          get_time { 
-            RestClient.put( 
-              url, 
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
-               :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
-          }
-        end
-      rescue => e
-        self.response = e.response
-      end
+      p_methods("put", url)
     end
 
     def post! url=nil
-      begin
-        if url == nil
-          get_time { 
-            RestClient.post(
-              self.url + self.path, 
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
-               :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
-          }
-        else
-          get_time { 
-            RestClient.post( 
-              url, 
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
-               :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
-          }
-        end
-      rescue => e
-        self.response = e.response
-      end
+      p_methods("post", url)
     end
 
     def get! url=nil
@@ -171,6 +123,36 @@ module Quinoa
     end
 
     private
+    def p_methods method_name, url=nil
+      meth = RestClient.method(method_name)
+      begin
+        if url == nil
+          get_time { 
+            meth.call(
+              self.url + self.path,
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
+        else
+          get_time { 
+            meth.call(
+              url,
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
+        end
+      rescue => e
+        self.response = e.response
+      end
+    end
+
+
     def add_expectation attribute, value, comparison = "eq", level = :warn
       self.expectations.merge! attribute.to_sym => {:compare_using => comparison, :value => value, :level => level}
     end
