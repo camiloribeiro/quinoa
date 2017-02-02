@@ -18,6 +18,34 @@ module Quinoa
       self.url = url
     end
 
+    def put! url=nil
+      begin
+        if url == nil
+          get_time { 
+            RestClient.put(
+              self.url + self.path, 
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
+        else
+          get_time { 
+            RestClient.put( 
+              url, 
+              self.body, 
+              {:accept => self.accept, 
+               :content_type => self.content_type, 
+               :authorization => self.authorization}.merge!(self.custom_headers)
+            ) 
+          }
+        end
+      rescue => e
+        self.response = e.response
+      end
+    end
+
     def post! url=nil
       begin
         if url == nil

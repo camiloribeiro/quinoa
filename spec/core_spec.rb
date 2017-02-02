@@ -101,7 +101,7 @@ describe Quinoa do
             expect(@service.custom_headers).to eq Hash[:"my-company-custom-header" => "text", :"my-foo-custom-header" => "foo"]
           end
 
-          ["post", "get"].each do |method|
+          ["post", "get", "put"].each do |method|
             it "Should be present in the #{method} requests" do
               # For this mock order matters
               stub_request(:any, "http://www.camiloribeiro.com").
@@ -133,7 +133,7 @@ describe Quinoa do
         end
       end
 
-      describe "overwiting the entire url to post and get" do
+      describe "overwiting the entire url to post, put get" do
 
         before(:each) do 
           stub_request(:any, "http://www.bugbang.com.br/foo").
@@ -168,6 +168,17 @@ describe Quinoa do
           expect(@service.authorization).to eq "token !#€%&/()="
           expect(@service.response.code).to eq(200)
         end
+
+        it "should overwite for put" do
+          @service.put! "http://www.bugbang.com.br/foo"
+
+          # explicity
+          expect(@service.response.headers[:accept]).to eq("application/xml")
+          expect(@service.response.headers[:content_type]).to eq("application/json")
+          expect(@service.response.body).to eq("simple response")
+          expect(@service.authorization).to eq "token !#€%&/()="
+          expect(@service.response.code).to eq(200)
+        end
       end
 
 
@@ -190,6 +201,24 @@ describe Quinoa do
 
             it "should post" do
               @service.post!
+
+              # explicity
+              expect(@service.response.headers[:accept]).to eq("application/xml")
+              expect(@service.response.headers[:content_type]).to eq("application/json")
+              expect(@service.response.body).to eq("simple response")
+              expect(@service.authorization).to eq "token !#€%&/()="
+              expect(@service.response.code).to eq(200)
+
+              # natural
+              expect(@service.response_accept).to eq("application/xml")
+              expect(@service.response_content_type).to eq("application/json")
+              expect(@service.response_body).to eq("simple response")
+              expect(@service.authorization).to eq "token !#€%&/()="
+              expect(@service.response_code).to eq(200)
+            end
+
+            it "should put" do
+              @service.put!
 
               # explicity
               expect(@service.response.headers[:accept]).to eq("application/xml")
@@ -261,6 +290,22 @@ describe Quinoa do
               expect(@service.response_code).to eq(code)
             end
 
+            it "should put" do
+              @service.put!
+
+              # explicity
+              expect(@service.response.headers[:accept]).to eq("application/xml")
+              expect(@service.response.headers[:content_type]).to eq("application/json")
+              expect(@service.response.body).to eq("simple response")
+              expect(@service.response.code).to eq(code)
+
+              # natural
+              expect(@service.response_accept).to eq("application/xml")
+              expect(@service.response_content_type).to eq("application/json")
+              expect(@service.response_body).to eq("simple response")
+              expect(@service.response_code).to eq(code)
+            end
+
             it "should get" do
               @service.get!
 
@@ -298,6 +343,24 @@ describe Quinoa do
 
             it "should post" do
               @service.post!
+
+              # explicity
+              expect(@service.response.headers[:accept]).to eq("application/xml")
+              expect(@service.response.headers[:content_type]).to eq("application/json")
+              expect(@service.response.body).to eq("simple response")
+              expect(@service.response.headers[:location]).to eq("http://www.bugbang.com.br")
+              expect(@service.response.code).to eq(code)
+
+              # natural
+              expect(@service.response_accept).to eq("application/xml")
+              expect(@service.response_content_type).to eq("application/json")
+              expect(@service.response_body).to eq("simple response")
+              expect(@service.response_location).to eq("http://www.bugbang.com.br")
+              expect(@service.response_code).to eq(code)
+            end
+
+            it "should put" do
+              @service.put!
 
               # explicity
               expect(@service.response.headers[:accept]).to eq("application/xml")
