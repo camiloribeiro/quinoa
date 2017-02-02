@@ -1,4 +1,9 @@
-0.0.10: Adding first version of expectations and report api
+0.0.12: Adding put method
+  - adding put method
+  - small code improvements
+  - updating development dependencies
+
+0.0.11: Adding first version of expectations and report api
   - adding report
   - adding expectations
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quinoa (0.0.11)
+    quinoa (0.0.12)
       rest-client (~> 2.0.0)
       rspec (~> 3.5.0)
 
@@ -10,8 +10,8 @@ GEM
   specs:
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
-    builder (3.2.2)
-    codeclimate-test-reporter (1.0.3)
+    builder (3.2.3)
+    codeclimate-test-reporter (1.0.5)
       simplecov
     coderay (1.1.1)
     crack (0.4.3)
@@ -27,15 +27,15 @@ GEM
     cucumber-core (1.5.0)
       gherkin (~> 4.0)
     cucumber-wire (0.0.1)
-    diff-lcs (1.2.5)
+    diff-lcs (1.3)
     docile (1.1.5)
-    domain_name (0.5.20161021)
+    domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     gherkin (4.0.0)
-    hashdiff (0.3.0)
+    hashdiff (0.3.2)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    json (2.0.2)
+    json (2.0.3)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -49,8 +49,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    public_suffix (2.0.4)
-    rake (11.3.0)
+    public_suffix (2.0.5)
+    rake (12.0.0)
     rest-client (2.0.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -69,7 +69,7 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     safe_yaml (1.0.4)
-    simplecov (0.12.0)
+    simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -81,7 +81,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    webmock (2.1.0)
+    webmock (2.3.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -90,15 +90,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  codeclimate-test-reporter (~> 1.0.3)
+  codeclimate-test-reporter (~> 1.0.5)
   cucumber (~> 2.4.0)
   nyan-cat-formatter (~> 0.11)
   pry (~> 0.10.4)
   quinoa!
-  rake (~> 11.3.0)
-  simplecov (~> 0.12.0)
+  rake (~> 12.0.0)
+  simplecov (~> 0.13.0)
   simplecov-json (~> 0.2)
-  webmock (~> 2.1.0)
+  webmock (~> 2.3.2)
 
 BUNDLED WITH
    1.13.6
