@@ -29,20 +29,20 @@ module Quinoa
     def get! url=nil
       begin
         if url == nil
-          get_time { 
+          get_time {
             RestClient.get(
-              self.url + self.path, 
-              {:accept => self.accept, 
+              self.url + self.path,
+              {:accept => self.accept,
                :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
+            )
           }
         else
-          get_time { 
-            RestClient.get( 
-              url, 
-              {:accept => self.accept, 
+          get_time {
+            RestClient.get(
+              url,
+              {:accept => self.accept,
                :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
+            )
           }
         end
       rescue => e
@@ -70,7 +70,7 @@ module Quinoa
       self.response.headers[:location]
     end
 
-    def add_custom_header custom_header_name, custom_header_value 
+    def add_custom_header custom_header_name, custom_header_value
       self.custom_headers.merge! custom_header_name.to_sym => custom_header_value.to_s
     end
 
@@ -101,11 +101,11 @@ module Quinoa
 
         self.assertions.merge! get_assertion_record(
           assertion_item,
-          expectation_map[:value], 
+          expectation_map[:value],
           check_attribute?(
             assertion_item,
-            expectation_map[:value], 
-            expectation_map[:compare_using]), 
+            expectation_map[:value],
+            expectation_map[:compare_using]),
           expectation_map[:level])
       end
     end
@@ -127,24 +127,24 @@ module Quinoa
       meth = RestClient.method(method_name)
       begin
         if url == nil
-          get_time { 
+          get_time {
             meth.call(
               self.url + self.path,
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
+              self.body,
+              {:accept => self.accept,
+               :content_type => self.content_type,
                :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
+            )
           }
         else
-          get_time { 
+          get_time {
             meth.call(
               url,
-              self.body, 
-              {:accept => self.accept, 
-               :content_type => self.content_type, 
+              self.body,
+              {:accept => self.accept,
+               :content_type => self.content_type,
                :authorization => self.authorization}.merge!(self.custom_headers)
-            ) 
+            )
           }
         end
       rescue => e
