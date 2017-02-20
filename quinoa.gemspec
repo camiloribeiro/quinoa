@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'cucumber', '~> 2.4.0'
   s.add_development_dependency 'webmock', '~> 2.3.2'
 
-  s.add_dependency 'rest-client', '~> 2.0.0'
+  s.add_dependency 'rest-client', '~> 2.0.1'
   s.add_dependency 'rspec', '~> 3.5.0'
 
 end
