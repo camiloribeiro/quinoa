@@ -44,7 +44,7 @@ To get a report back you can use the function report
 LICENSE
 =======
 
-Copyright 2015 - 2016 Camilo Ribeiro camilo@camiloribeiro.com
+Copyright 2015 - 2017 Camilo Ribeiro camilo@camiloribeiro.com
 
 This file is part of Quinoa.
 
