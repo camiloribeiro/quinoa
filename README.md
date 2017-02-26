@@ -12,6 +12,9 @@ quinoa
 Quinoa is a service-object model framework built on top of rest-client (https://github.com/rest-client/rest-client). 
 The idea is to define a rest endpoint and some details about it only once, and than reuse it with different payloads or properties.
 
+This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code.
+
 For example, if I want to define a rest endpoint for the url http://www.camiloribeiro.com with the content-type application/json and send two different body payloads, I could do it like this:
 
       test = Quinoa::Service.new "http://camiloribeiro.com"
